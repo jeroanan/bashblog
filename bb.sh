@@ -94,7 +94,7 @@ global_variables() {
     footer_file=""
     # extra content to add just after we open the <body> tag
     # and before the actual blog content
-    body_begin_file=""
+    body_begin_file="inc/blog_header.html"
     # extra content to add just before we close </body>
     body_end_file=""
     # extra content to ONLY on the index page AFTER `body_begin_file` contents
