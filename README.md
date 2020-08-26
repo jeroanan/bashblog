@@ -1,6 +1,9 @@
 bashblog
 ========
 
+The main bashblog repo (https://github.com/cfenollosa/bashblog) contains code that can generater links to proprietary services such as Google Analytics, Feedburner, Twitter and Disqus. I do not need these services, so I have removed that code. As time goes on I may remove other features that I do not need. This makes the code a bit smaller so I may be easier able to add new functionality that I do want later.
+
+
 A single Bash script to create blogs. 
 
 I created it because I wanted a very, very simple way to post entries to a blog by using a public folder on my server, without any special requirements and dependencies. Works on GNU/Linux, OSX and BSD.
