@@ -36,10 +36,6 @@ global_variables() {
     # CC by-nc-nd is a good starting point, you can change this to "&copy;" for Copyright
     global_license="CC by-nc-nd"
 
-    # Leave this empty (i.e. "") if you don't want to use feedburner, 
-    # or change it to your own URL
-    global_feedburner=""
-
     # Change this to your username if you want to use twitter for comments
     global_twitter_username=""
     # Set this to false for a Twitter button with share count. The cookieless version
@@ -712,7 +708,6 @@ rebuild_index() {
         done < <(ls -t ./*.html) # sort by date, newest first
 
         feed=$blog_feed
-        if [[ -n $global_feedburner ]]; then feed=$global_feedburner; fi
         echo "<div id=\"all_posts\"><a href=\"$archive_index\">$template_archive</a> &mdash; <a href=\"$tags_index\">$template_tags_title</a> &mdash; <a href=\"$feed\">$template_subscribe</a></div>"
     } 3>&1 >"$contentfile"
 
@@ -913,11 +908,7 @@ create_includes() {
         echo '<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />'
         echo '<meta name="viewport" content="width=device-width, initial-scale=1.0" />'
         printf '<link rel="stylesheet" href="%s" type="text/css" />\n' "${css_include[@]}"
-        if [[ -z $global_feedburner ]]; then
-            echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"$template_subscribe_browser_button\" href=\"$blog_feed\" />"
-        else 
-            echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"$template_subscribe_browser_button\" href=\"$global_feedburner\" />"
-        fi
+        echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"$template_subscribe_browser_button\" href=\"$blog_feed\" />"
         } > ".header.html"
     fi
 
