@@ -36,14 +36,6 @@ global_variables() {
     # CC by-nc-nd is a good starting point, you can change this to "&copy;" for Copyright
     global_license="CC by-nc-nd"
 
-    # Change this to your username if you want to use twitter for comments
-    global_twitter_username=""
-    # Set this to false for a Twitter button with share count. The cookieless version
-    # is just a link.
-    global_twitter_cookieless="true"
-    # Default search page, where tweets more than a week old are hidden
-    global_twitter_search="twitter"
-
     # Change this to your disqus username to use disqus for comments
     global_disqus_username=""
 
@@ -96,8 +88,6 @@ global_variables() {
     html_exclude=()
 
     # Localization and i18n
-    # "Comments?" (used in twitter link after every post)
-    template_comments="Comments?"
     # "Read more..." (link under cut article on index page)
     template_read_more="Read more..."
     # "View more posts" (used on bottom of index page as link to archive)
@@ -120,9 +110,6 @@ global_variables() {
     template_subscribe="Subscribe"
     # "Subscribe to this page..." (used as text for browser feed button that is embedded to html)
     template_subscribe_browser_button="Subscribe to this page..."
-    # "Tweet" (used as twitter text button for posting to twitter)
-    template_twitter_button="Tweet"
-    template_twitter_comment="&lt;Type your comment here but please leave the URL so that other people can follow the comments&gt;"
     
     # The locale to use for the dates displayed on screen
     date_format="%B %d, %Y"
@@ -299,52 +286,6 @@ edit() {
     fi
 }
 
-# Create a Twitter summary (twitter "card") for the post
-#
-# $1 the post file
-# $2 the title
-twitter_card() {
-    [[ -z $global_twitter_username ]] && return
-    
-    echo "<meta name='twitter:card' content='summary' />"
-    echo "<meta name='twitter:site' content='@$global_twitter_username' />"
-    echo "<meta name='twitter:title' content='$2' />" # Twitter truncates at 70 char
-    description=$(grep -v "^<p>$template_tags_line_header" "$1" | sed -e 's/<[^>]*>//g' | tr '\n' ' ' | sed "s/\"/'/g" | head -c 250) 
-    echo "<meta name='twitter:description' content=\"$description\" />"
-    image=$(sed -n '2,$ d; s/.*<img.*src="\([^"]*\)".*/\1/p' "$1") # First image is fine
-    [[ -z $image ]] && return
-    [[ $image =~ ^https?:// ]] || image=$global_url/$image # Check that URL is absolute
-    echo "<meta name='twitter:image' content='$image' />"
-}
-
-# Adds the code needed by the twitter button
-#
-# $1 the post URL
-twitter() {
-    [[ -z $global_twitter_username ]] && return
-
-    if [[ -z $global_disqus_username ]]; then
-        if [[ $global_twitter_cookieless == true ]]; then 
-            id=$RANDOM
-
-            search_engine="https://twitter.com/search?q="
-
-            echo "<p id='twitter'><a href='http://twitter.com/intent/tweet?url=$1&text=$template_twitter_comment&via=$global_twitter_username'>$template_comments $template_twitter_button</a> "
-            echo "<a href='$search_engine""$1'><span id='count-$id'></span></a>&nbsp;</p>"
-            return;
-        else 
-            echo "<p id='twitter'>$template_comments&nbsp;"; 
-        fi
-    else
-        echo "<p id='twitter'><a href=\"$1#disqus_thread\">$template_comments</a> &nbsp;"
-    fi  
-
-    echo "<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-text=\"$template_twitter_comment\" data-url=\"$1\""
-    echo " data-via=\"$global_twitter_username\""
-    echo ">$template_twitter_button</a>	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>"
-    echo "</p>"
-}
-
 # Check if the file is a 'boilerplate' (i.e. not a post)
 # The return values are designed to be used like this inside a loop:
 # is_boilerplate_file <file> && continue
@@ -396,7 +337,6 @@ create_html_page() {
     {
         cat ".header.html"
         echo "<title>$title</title>"
-        twitter_card "$content" "$title"
         echo "</head><body>"
         # stuff to add before the actual body content
         [[ -n $body_begin_file ]] && cat "$body_begin_file"
@@ -439,7 +379,6 @@ create_html_page() {
         if [[ $index == no ]]; then
             echo -e '\n<!-- text end -->'
 
-            twitter "$global_url/$file_url"
 
             echo '<!-- entry end -->' # absolute end of the post
         fi
@@ -946,7 +885,7 @@ create_css() {
         h3{margin-top:42px;margin-bottom:8px;}
         h4{margin-left:24px;margin-right:24px;}
         img{max-width:100%;}
-        #twitter{line-height:20px;vertical-align:top;text-align:right;font-style:italic;color:#333;margin-top:24px;font-size:14px;}' > blog.css
+        ' > blog.css
     fi
 
     # If there is a style.css from the parent page (i.e. some landing page)
