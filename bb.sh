@@ -20,18 +20,18 @@ global_variables() {
     global_software_version="2.9"
 
     # Blog title
-    global_title="Dave Wilson"
+    global_title="My fancy blog"
     # The typical subtitle for each blog
-    global_description=""
+    global_description="A blog about turtles and carrots"
     # The public base URL for this blog
-    global_url="https://www.pipem.co.uk/blog"
+    global_url="http://example.com/blog"
 
     # Your name
-    global_author="Dave Wilson"
+    global_author="John Smith"
     # You can use twitter or facebook or anything for global_author_url
-    global_author_url="https://www.pipem.co.uk" 
+    global_author_url="http://example.com/blog" 
     # Your email
-    global_email=""
+    global_email="john@smith.com"
 
     # CC by-nc-nd is a good starting point, you can change this to "&copy;" for Copyright
     global_license="CC by-nc-nd"
@@ -71,7 +71,7 @@ global_variables() {
     footer_file=""
     # extra content to add just after we open the <body> tag
     # and before the actual blog content
-    body_begin_file="inc/blog_header.html"
+    body_begin_file=""
     # extra content to add just before we close </body>
     body_end_file=""
     # extra content to ONLY on the index page AFTER `body_begin_file` contents
